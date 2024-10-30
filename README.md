@@ -1,5 +1,5 @@
-Before Rust version 1.82, it is easy to create a Rust/Webpack project
-using rust-webpackt template. You simply follow the steps below:
+Before Rust version 1.82, it is easy to create a Rust WebAssembly project
+by using rust-webpack template. You simply follow the steps below:
 
     md my_proj
     cd my_proj
