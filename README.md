@@ -60,11 +60,13 @@ Below is the instructions how to avoid the problem. Beware there are other ways.
 > cd my_proj
 >
 > npm init rust-webpack
-> npm install
 
-- modify the package.json file
+- Update webpack to version 5
+> npm install webpack@latest webpack-cli@latest webpack-dev-server@latest --save-dev
 
-- Start the app. Wait until the build is complete
+- modify the package.json and webpack.config.js files
+
+- Start the app. Then wait until the build is complete.
 > npm run start
 
 From your browser, for URL, http://localhost:8080/.
