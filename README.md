@@ -1,48 +1,75 @@
-## How to install
+Before Rust version 1.82, it is easy to create a Rust/Webpack project
+using rust-webpackt template. You simply follow the steps below:
 
-```sh
-npm install
-```
+    md my_proj
+    cd my_proj
+    npm init rust-webpack
+    npm install
+    npm run start
 
-## How to run in debug mode
+But if you updated to Rust version 1.82, you will see the following message:
 
-```sh
-# Builds the project and opens it in a new browser tab. Auto-reloads when the project changes.
-npm start
-```
+    ERROR in ./pkg/index_bg.wasm
+    Module parse failed: Internal failure: parseVec could not cast the value
+    You may need an appropriate loader to handle this file type, currently no loaders are configured to process this file. See https://webpack.js.org/concepts#loaders
+    Error: Internal failure: parseVec could not cast the value
+        at parseVec (C:\Users\Yong\RustProjects\myproj\node_modules\@webassemblyjs\wasm-parser\lib\decoder.js:343:15)
+        at parseTypeSection (C:\Users\Yong\RustProjects\myproj\node_modules\@webassemblyjs\wasm-parser\lib\decoder.js:375:22)
+        at parseSection (C:\Users\Yong\RustProjects\myproj\node_modules\@webassemblyjs\wasm-parser\lib\decoder.js:1379:23)
+        at Object.decode (C:\Users\Yong\RustProjects\myproj\node_modules\@webassemblyjs\wasm-parser\lib\decoder.js:1740:25)
+        at decode (C:\Users\Yong\RustProjects\myproj\node_modules\@webassemblyjs\wasm-parser\lib\index.js:253:21)
+        at WebAssemblyParser.parse (C:\Users\Yong\RustProjects\myproj\node_modules\webpack\lib\wasm-async\AsyncWebAssemblyParser.js:61:19)
+        at C:\Users\Yong\RustProjects\myproj\node_modules\webpack\lib\NormalModule.js:1303:19
+        at processResult (C:\Users\Yong\RustProjects\myproj\node_modules\webpack\lib\NormalModule.js:937:11)
+        at C:\Users\Yong\RustProjects\myproj\node_modules\webpack\lib\NormalModule.js:1030:5
+        at C:\Users\Yong\RustProjects\myproj\node_modules\loader-runner\lib\LoaderRunner.js:407:3
+        at iterateNormalLoaders (C:\Users\Yong\RustProjects\myproj\node_modules\loader-runner\lib\LoaderRunner.js:233:10)
+        at C:\Users\Yong\RustProjects\myproj\node_modules\loader-runner\lib\LoaderRunner.js:224:4
+        at C:\Users\Yong\RustProjects\myproj\node_modules\webpack\lib\NormalModule.js:984:15
+        at Array.eval (eval at create (C:\Users\Yong\RustProjects\myproj\node_modules\tapable\lib\HookCodeFactory.js:33:10), <anonymous>:12:1)
+        at runCallbacks (C:\Users\Yong\RustProjects\myproj\node_modules\enhanced-resolve\lib\CachedInputFileSystem.js:45:15)
+        at C:\Users\Yong\RustProjects\myproj\node_modules\enhanced-resolve\lib\CachedInputFileSystem.js:279:5
+    @ ./pkg/index.js 1:0-40 4:15-19 5:0-21
+    @ ./js/index.js
 
-## How to build in release mode
+The problem is caused by the fact: 
 
-```sh
-# Builds the project and places it into the `dist` folder.
-npm run build
-```
+Starting with Rust 1.82 reference-types is always present in the target_features section. The problem is that JS bundlers like Webpack can't currently handle the reference-types proposal.
 
-## How to run unit tests
+Below is the instructions how to avoid the problem. Beware there are other ways. 
 
-```sh
-# Runs tests in Firefox
-npm test -- --firefox
+# Instructions
 
-# Runs tests in Chrome
-npm test -- --chrome
+- Following the [instructions](https://www.rust-lang.org/learn/get-started) to install Rust if not yet
 
-# Runs tests in Safari
-npm test -- --safari
-```
+- Downgrade your Rust installation to version 1.81 if you have version 1.82 installed
+> rustup install 1.81
 
-## What does each file do?
+- Reset the default Rust 1.81 if you set the default to nightly
+> rustup default 1.81-x86_64-pc-windows-msvc
 
-* `Cargo.toml` contains the standard Rust metadata. You put your Rust dependencies in here. You must change this file with your details (name, description, version, authors, categories)
+- Add a new target
+> rustup target add wasm32-unknown-unknown
 
-* `package.json` contains the standard npm metadata. You put your JavaScript dependencies in here. You must change this file with your details (author, name, version)
+- to install wasm pack, a tool to work with rust generated web assembly
+> cargo install wasm-pack
 
-* `webpack.config.js` contains the Webpack configuration. You shouldn't need to change this, unless you have very special needs.
+- Create a folder and project
 
-* The `js` folder contains your JavaScript code (`index.js` is used to hook everything into Webpack, you don't need to change it).
+> mkdir my_proj
+> cd my_proj
+>
+> npm init rust-webpack
+> npm install
 
-* The `src` folder contains your Rust code.
+- modify the package.json file
 
-* The `static` folder contains any files that you want copied as-is into the final build. It contains an `index.html` file which loads the `index.js` file.
+- Start the app. Wait until the build is complete
+> npm run start
 
-* The `tests` folder contains your Rust unit tests.
+From your browser, for URL, http://localhost:8080/.
+Open Developer tools, locate the console. You should see
+"Hello world!".
+
+Congratulations! You have successfully created a default Rust/Webpack project
+using rust-webpackt template!
