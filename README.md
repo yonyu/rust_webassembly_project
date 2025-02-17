@@ -1,3 +1,75 @@
+# Creating a Rust Web Assembly project
+
+Before Rust version 1.82, it is easy to create a Rust WebAssembly project by using rust-webpack template. You simply follow the steps below:
+
+md my_proj
+cd my_proj
+npm init rust-webpack
+npm install
+npm run start
+
+But if you updated to Rust version 1.82+, you will see some errors while following the above steps.
+
+In the repo, I list the steps to create a new Rust Web Assembly project the following versions:
+- rust stable: 1.84.1
+- wasm-pack: 0.13.1
+
+This should work for the newer versions.
+
+
+## How to set up the project
+
+versions:
+- rust stable: 1.84.1
+- wasm-pack: 0.13.1
+
+- Create the project folder
+  > mkdir my_proj
+- Enter the project folder
+  > cd my_proj
+- Initialize the project
+  > npm init rust-webpack
+- Update the dependent packages
+  > npm install webpack@latest webpack-cli@latest webpack-dev-server@latest --save-dev
+- Tune the configuration files
+  > package.json
+  > "start": "rimraf dist pkg && webpack-dev-server --open -d" =>
+  > "start": "rimraf dist pkg && webpack-dev-server --open --devtool source-map",
+
+  > webpack.config.js file
+
+  Replace devServer and plugins sections with the new content below:
+
+  ```
+  devServer: {
+    static: {
+      directory: dist,
+    },
+  },
+  experiments: {
+    asyncWebAssembly: true,
+  },
+  module: {
+    rules: [
+      {
+        test: /\.wasm$/,
+        type: "webassembly/async",
+      }
+    ]
+  },
+  plugins: [
+    new CopyPlugin(
+      [
+        { from: path.resolve(__dirname, "static"), to: dist }
+      ],
+    ),
+
+    new WasmPackPlugin({
+      crateDirectory: __dirname,
+    }),
+  ]
+  ```
+
 ## How to install
 
 ```sh
