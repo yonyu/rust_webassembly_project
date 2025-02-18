@@ -1,27 +1,29 @@
 # Creating a Rust Web Assembly project
 
 Before Rust version 1.82, it is easy to create a Rust WebAssembly project by using rust-webpack template. You simply follow the steps below:
-
+```
 md my_proj
 cd my_proj
 npm init rust-webpack
 npm install
 npm run start
-
+```
 But if you updated to Rust version 1.82+, you will see some errors while following the above steps.
 
-In the repo, I list the steps to create a new Rust Web Assembly project the following versions:
-- rust stable: 1.84.1
-- wasm-pack: 0.13.1
+In this repo, I'll give the correct steps to create a new Rust Web Assembly project for the following versions:
+* rust stable: 1.84.1
+* wasm-pack: 0.13.1
 
-This should work for the newer versions.
+I'll give update for the future versions if there is any change required.
 
 
 ## How to set up the project
 
-versions:
-- rust stable: 1.84.1
-- wasm-pack: 0.13.1
+Versions used:
+* rust stable: 1.84.1
+* wasm-pack: 0.13.1
+
+Steps
 
 - Create the project folder
   > mkdir my_proj
@@ -31,7 +33,7 @@ versions:
   > npm init rust-webpack
 - Update the dependent packages
   > npm install webpack@latest webpack-cli@latest webpack-dev-server@latest --save-dev
-- Tune the configuration files
+- Tune the configuration files (refer to the commit "Tune the configuration files" for details)
   > package.json
   > "start": "rimraf dist pkg && webpack-dev-server --open -d" =>
   > "start": "rimraf dist pkg && webpack-dev-server --open --devtool source-map",
