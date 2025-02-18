@@ -1,5 +1,7 @@
 # Creating a Rust Web Assembly project
 
+You can create your own repository by using this reopository as the template.
+
 Before Rust version 1.82, it is easy to create a Rust WebAssembly project by using rust-webpack template. You simply follow the steps below:
 
 ```
