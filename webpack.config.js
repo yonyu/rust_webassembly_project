@@ -30,11 +30,11 @@ module.exports = {
     ]
   },
   plugins: [
-    new CopyPlugin(
-      [
+    new CopyPlugin({
+      patterns: [
         { from: path.resolve(__dirname, "static"), to: dist }
       ],
-    ),
+    }),
 
     new WasmPackPlugin({
       crateDirectory: __dirname,
