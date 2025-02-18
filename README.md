@@ -1,6 +1,7 @@
 # Creating a Rust Web Assembly project
 
 Before Rust version 1.82, it is easy to create a Rust WebAssembly project by using rust-webpack template. You simply follow the steps below:
+
 ```
 md my_proj
 cd my_proj
@@ -8,18 +9,23 @@ npm init rust-webpack
 npm install
 npm run start
 ```
-But if you updated to Rust version 1.82+, you will see some errors while following the above steps.
+
+But if you updated to Rust version 1.82+, you will see some errors while following the above steps:
+
+*Error: Internal failure: parseVec could not cast the value......*
 
 In this repo, I'll give the correct steps to create a new Rust Web Assembly project for the following versions:
-* rust stable: 1.84.1
-* wasm-pack: 0.13.1
 
-I'll give update for the future versions if there is any change required.
+* rust stable: 1.84.1+
+* wasm-pack: 0.13.1+
+
+I'll give update for the future versions in case if there is any change required.
 
 
 ## How to set up the project
 
 Versions used:
+
 * rust stable: 1.84.1
 * wasm-pack: 0.13.1
 
